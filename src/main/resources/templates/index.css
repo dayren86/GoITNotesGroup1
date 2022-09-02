@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    color: #212121;
+    font-style: normal;
+}
+
+li {
+    list-style: none;
+    display: inline-block;
+    margin: 5px;
+}
+.link {
+    text-decoration: none;
+}
+ul{
+    margin: 0;
+    padding: 0;
+}
+/*===========BUTTONS=============*/
+.button{
+    color: #ffffff;
+    background: mediumseagreen;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+.create-button {
+    color: #ffffff;
+    background: mediumseagreen;
+    display: inline-block;
+    margin-left: auto;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+.cancel-button{
+    background: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+
+}
+
+.action-button {
+    background-color: transparent;
+    border: none;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.button:focus,
+.button:hover
+.create-button:focus,
+.create-button:hover{
+    background-color: darkgreen;
+}
+
+.cancel-button:focus,
+.cancel-button:hover {
+    background-color: azure;
+}
+/*===========/BUTTONS=============*/
+.hero{
+    background: aliceblue;
+    padding: 30px;
+}
+
+.title{
+    margin: 0 auto;
+    display: inline-block;
+}
+.content-area{
+    margin: 0 auto;
+    width: 50%;
+}
+
+.frame{
+    margin: 5px;
+}
+.error{
+    margin: 0 auto;
+    width: 40%;
+    text-align: center;
+}
+
+.bottom{
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.bottom-form{
+    display: inline-block;
+    margin-left: 10px;
+}
+.bottom-list{
+    display: inline-block;
+}
+#setContent {
+    width: 100%;
+}
