@@ -12,7 +12,7 @@ import java.util.UUID;
 public class UsersService {
     private final UsersRepository usersRepository;
 
-    public void createUser(String email, String password, List<Notes> notes){
+    public void createUser(String email, String password, List<Notes> notes) {
         Users users = new Users();
         users.setEmail(email);
         users.setPassword(password);
@@ -20,19 +20,19 @@ public class UsersService {
         usersRepository.save(users);
     }
 
-    public void updateUserById(UUID userUuid, String email, String password, List<Notes> notes){
-        Users users = getById(userUuid);
+    public Users getUserByUuid(UUID userUuid) {
+        return usersRepository.getReferenceById(userUuid);
+    }
+
+    public void updateUserByUuid(UUID userUuid, String email, String password, List<Notes> notes) {
+        Users users = getUserByUuid(userUuid);
         users.setEmail(email);
         users.setPassword(password);
         users.setNotesList(notes);
         usersRepository.save(users);
     }
 
-    private Users getById(UUID userUuid) {
-        return usersRepository.getReferenceById(userUuid);
-    }
-
-    public void delete(UUID userUuid){
+    public void deleteUserByUuid(UUID userUuid) {
         usersRepository.deleteById(userUuid);
     }
 }
