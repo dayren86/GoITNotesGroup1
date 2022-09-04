@@ -13,7 +13,7 @@ import java.io.IOException;
 @Controller
 @AllArgsConstructor
 public class MainController {
-    private UserRepository userRepo;
+//    private UserRepository userRepo;
 
     @GetMapping("/")
     public String showHomePage(){
@@ -27,15 +27,15 @@ public class MainController {
         return modelAndView;
     }
 
-    @PostMapping("/process_register")
-    public void processRegister(Users user, HttpServletResponse response) throws IOException {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
-        userRepo.save(user);
-
-        response.sendRedirect("/login");
-    }
+//    @PostMapping("/process_register")
+//    public void processRegister(Users user, HttpServletResponse response) throws IOException {
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String encodedPassword = passwordEncoder.encode(user.getPassword());
+//        user.setPassword(encodedPassword);
+//
+//        userRepo.save(user);
+//
+//        response.sendRedirect("/login");
+//    }
 
 }
