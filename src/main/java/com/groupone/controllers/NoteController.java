@@ -54,6 +54,21 @@ public class NoteController {
         return modelAndView;
     }
 
+    @PostMapping("/save")
+    public void saveUser(@RequestParam(name = "setNameNotes") String title,
+                         @RequestParam(name = "setContent") String content,
+                         HttpServletResponse response) {
+        System.out.println("title = " + title);
+        System.out.println("content = " + content);
+//        System.out.println("visibility = " + visibility);
+//        service.save(user);
+        try {
+            response.sendRedirect("list");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("/edit/{id}")
     public ModelAndView editNote(@PathVariable("id") UUID uuid){
 //        Notes note = service.get(uuid);
