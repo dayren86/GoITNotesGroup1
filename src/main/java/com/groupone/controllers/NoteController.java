@@ -1,46 +1,53 @@
-package com.example.spring.controllers;
+package com.groupone.controllers;
 
-import com.example.spring.test.appuser.AppUserService;
+
+import com.groupone.notes.Notes;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @AllArgsConstructor
 public class NoteController {
 
-    private AppUserService service;
+    private UsersService service;
 
     @GetMapping("/note/list")
-    public String mainUserPage(Model model){
-        model.addAttribute("listSize", service.listAll().size());
-        model.addAttribute("listOfNotes", service.listAll());
-        return "note-list";
+    public ModelAndView mainUserPage(){
+        ModelAndView modelAndView = new ModelAndView("note-list");
+        modelAndView.addObject("listSize", service.listAll().size());
+        modelAndView.addObject("listOfNotes", service.listAll());
+        return modelAndView;
     }
 
     @PostMapping("note/create")
-    public String createNote(Model model){
-        model.addAttribute("note", new Note());
-        return "note-create";
+    public ModelAndView createNote(){
+        ModelAndView modelAndView = new ModelAndView("note-create");
+        modelAndView.addObject("note", new Notes());
+        return modelAndView;
     }
 
     @PostMapping("note/edit")
-    public String editNote(Model model, HttpServletRequest req){
-        Note note = service.get(req.getParameter("noteId"));
-        model.addAttribute("note", note);
-        return "note-create";
+    public ModelAndView editNote(@RequestParam(name = "noteId") Long id){
+        Notes note = service.get(id);
+        ModelAndView modelAndView = new ModelAndView("note-edit");
+        modelAndView.addObject("note", note);
+        modelAndView.addObject("variables", note.getVisibility().name());
+        return modelAndView;
     }
 
     @GetMapping("/note/share/{id}")
-    public String shareNote(@PathVariable("id") Long id, Model model){
-        Note note = service.get(id);
-        model.addAttribute("note", note);
-        return "noteById";
+    public ModelAndView shareNote(@PathVariable("id") Long id){
+        Notes note = service.get(id);
+        ModelAndView modelAndView = new ModelAndView("noteById");
+        modelAndView.addObject("note", note);
+        return modelAndView;
     }
 
 }

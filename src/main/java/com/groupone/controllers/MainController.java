@@ -1,39 +1,41 @@
-package com.example.spring.controllers;
+package com.groupone.controllers;
 
-import com.example.spring.test.appuser.AppUser;
-import com.example.spring.test.appuser.AppUserRepository;
+import com.groupone.users.Users;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
 public class MainController {
-    private AppUserRepository userRepo;
+    private UserRepository userRepo;
 
-    @GetMapping("")
+    @GetMapping("/")
     public String showHomePage(){
         return "redirect:/note/list";
     }
 
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new AppUser());
-        return "signup_form";
+    public ModelAndView showRegistrationForm() {
+        ModelAndView modelAndView = new ModelAndView("signup_form");
+        modelAndView.addObject("user", new Users());
+        return modelAndView;
     }
 
     @PostMapping("/process_register")
-    public String processRegister(AppUser user) {
+    public void processRegister(Users user, HttpServletResponse response) throws IOException {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
         userRepo.save(user);
 
-        return "redirect:/login";
+        response.sendRedirect("/login");
     }
 
 }
