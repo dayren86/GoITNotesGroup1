@@ -60,8 +60,11 @@ public class NoteController {
 
 
         ModelAndView modelAndView = new ModelAndView("note-edit");
-        modelAndView.addObject("note", note);
-        modelAndView.addObject("variables", note.getVisibility().name());
+        modelAndView.addObject("nameNotes", test().getNameNotes());
+        modelAndView.addObject("content", test().getContent());
+        modelAndView.addObject("variables", test().getVisibility().name());
+//        modelAndView.addObject("note", note);
+//        modelAndView.addObject("variables", note.getVisibility().name());
         return modelAndView;
     }
 
