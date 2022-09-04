@@ -1,0 +1,44 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Create new note</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css"/>
+</head>
+<body class="hero">
+
+<h1>Create note</h1>
+
+<form class="note-create" action="/note/create" method="post">
+    <p>Title <input type="text" class="title" value="" name="setNameNotes" id="setNameNotes"></p>
+    <p><textarea class="content-area" rows="20" cols="80" placeholder="Enter your note here..." name="setContent" id="setContent"></textarea></p>
+</form>
+
+<div class="bottom">
+    <ul class="bottom-list">
+        <li>
+            <input type="radio" id="private" name="access" value="private" checked>
+            <label for="private">Private</label>
+        </li>
+        <li>
+            <input type="radio" id="public" name="access" value="public">
+            <label for="public">Public</label>
+        </li>
+    </ul>
+    <div>
+        <a href="note-list.html" class="cancel-button">Cancel</a>
+        <form class="bottom-form" action="/note/validate" method="post">
+            <button class="button" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

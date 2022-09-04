@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css"/>
+</head>
+
+<body class="hero">
+<div class="container">
+
+    <h3 class="registration-error" th:text="${registrationError}"></h3>
+
+    <h1 class="center">Registration</h1>
+
+    <form class="reg-form" action="/register" method="post">
+        <label>Login
+            <input type="text" class="login-input" value="" placeholder="Login" name="setEmail" id="setEmail"></label>
+        <label>Password
+            <input type="text" class="login-input" value="" placeholder="Password" name="setPassword" id="setPassword"></label>
+        <button class="button sing-up-button" type="submit">Sign up</button>
+    </form>
+</div>
+
+</body>
+</html>
+
