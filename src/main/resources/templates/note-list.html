@@ -35,7 +35,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr th:each="notes: ${listOfNotes}">
             <td th:text="${notes.nameNotes}"></td>
             <td th:text="${notes.content}"></td>
             <td th:text="${notes.visibility}"></td>
