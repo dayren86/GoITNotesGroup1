@@ -17,7 +17,7 @@
 
 <h1>Edit note</h1>
 
-<form class="note-create" action="/note/edit" method="post">
+<form class="note-create" action="/note/save" method="post">
 <!--    <span th:text="${notes.getId()}"></span>-->
     <p>Title <input type="text" class="title" th:value="${getNameNotes}" name="setNameNotes" id="setNameNotes"></p>
 
@@ -37,7 +37,7 @@
             </li>
         </ul>
         <div>
-            <a href="list" class="cancel-button">Cancel</a>
+            <a href="/note/list" class="cancel-button">Cancel</a>
             <button class="button" type="submit">Save</button>
         </div>
     </div>
