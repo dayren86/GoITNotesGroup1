@@ -43,7 +43,7 @@
             <td>
                 <ul>
                     <li>
-                        <form class="action-button" action="delete/${notes.id}" method="post">
+                        <form class="action-button" th:action="'delete/'+ ${notes.id}" method="post">
 
                             <button class="action-button" type="submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
@@ -67,7 +67,7 @@
                             </button>
                     </form></li>
                     <li>
-                        <form class="action-button" action="share/${notes.id}">
+                        <form class="action-button" th:action="'share/'+ ${notes.id}">
                             <button class="action-button" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
                              height="20">

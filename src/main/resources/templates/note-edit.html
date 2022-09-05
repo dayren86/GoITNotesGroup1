@@ -18,12 +18,13 @@
 <h1>Edit note</h1>
 
 <form class="note-create" action="/note/edit" method="post">
-    <span th:text="${notes.getId()}"></span>
-    <p>Title <input type="text" class="title" th:value=”${note.nameNotes}” name="setNameNotes" id="setNameNotes"></p>
+<!--    <span th:text="${notes.getId()}"></span>-->
+    <p>Title <input type="text" class="title" th:value="${getNameNotes}" name="setNameNotes" id="setNameNotes"></p>
 
-    <p><textarea rows="20" th:value=”${note.content}” name="setContent" id="setContent"></textarea></p>
+    <p><textarea rows="20" th:text="${getContent}" name="setContent" id="setContent"></textarea></p>
 
-    <input type="hidden" th:value="${note.id}">
+    <input type="hidden" th:value="${getId}">
+
     <div class="bottom">
         <ul class="bottom-list">
             <li>

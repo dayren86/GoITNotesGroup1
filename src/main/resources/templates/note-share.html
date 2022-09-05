@@ -14,8 +14,9 @@
   <link rel="stylesheet" href="../index.css"/>
 </head>
 <body>
-<h1 class="title" th:text="${nameNotes}"> </h1>
+<h1 class="title" th:text="${getNameNotes}"> </h1>
 <br>
-<h4 th:text="${content}"></h4>
+<h4 th:text="${getContent}"></h4>
+<input type="hidden" th:value="${getId}">
 </body>
 </html>
