@@ -73,8 +73,8 @@ public class NoteController {
     public ModelAndView editNote(@PathVariable("id") UUID uuid){
 //        Notes note = service.get(uuid);
 
-
         ModelAndView modelAndView = new ModelAndView("note-edit");
+        modelAndView.addObject("id", test().getId());
         modelAndView.addObject("nameNotes", test().getNameNotes());
         modelAndView.addObject("content", test().getContent());
         modelAndView.addObject("variables", test().getVisibility().name());
