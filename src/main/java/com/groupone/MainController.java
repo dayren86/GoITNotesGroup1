@@ -1,4 +1,4 @@
-package com.groupone.controllers;
+package com.groupone;
 
 import com.groupone.users.Users;
 import jakarta.servlet.http.HttpServletResponse;

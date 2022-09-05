@@ -1,4 +1,4 @@
-package com.groupone.controllers;
+package com.groupone.notes;
 
 
 import com.groupone.notes.Notes;
@@ -39,11 +39,8 @@ public class NoteController {
 
 
         ModelAndView modelAndView = new ModelAndView("note-list");
-//        modelAndView.addObject("listSize", service.listAll().size());
-//        modelAndView.addObject("listOfNotes", service.listAll());
-        modelAndView.addObject("count", 1);
-
-        modelAndView.addObject("listOfNotes", Collections.singletonList(test()));
+        modelAndView.addObject("count", service.getAllNotes().size());
+        modelAndView.addObject("listOfNotes", service.getAllNotes());
 
         return modelAndView;
     }
@@ -51,18 +48,17 @@ public class NoteController {
     @GetMapping("/create")
     public ModelAndView createNote() {
         ModelAndView modelAndView = new ModelAndView("note-create");
-//        modelAndView.addObject("note", new Notes());
+        modelAndView.addObject("note", new Notes());
         return modelAndView;
     }
 
     @PostMapping("/save")
-    public void saveUser(@RequestParam(name = "setNameNotes") String title,
+    public void saveNote(@RequestParam(name = "access") String access,
+                         @RequestParam(name = "setNameNotes") String title,
                          @RequestParam(name = "setContent") String content,
                          HttpServletResponse response) {
-        System.out.println("title = " + title);
-        System.out.println("content = " + content);
-//        System.out.println("visibility = " + visibility);
-//        service.save(user);
+
+        service.createNote(title, content, Visibility.valueOf(access));
         try {
             response.sendRedirect("list");
         } catch (IOException e) {
@@ -82,6 +78,21 @@ public class NoteController {
 
         return modelAndView;
     }
+
+    @PostMapping("/edit/{id}/save")
+    public void updateNote2(@PathVariable("id") UUID uuid,
+                            @RequestParam(name = "access") String access,
+                            @RequestParam(name = "setNameNotes") String title,
+                            @RequestParam(name = "setContent") String content,
+                            HttpServletResponse response) {
+        service.updateNote(uuid, title, content, Visibility.valueOf(access));
+        try {
+            response.sendRedirect("/note/list");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @GetMapping("/share/{id}")
     public ModelAndView shareNote(@PathVariable("id") UUID uuid) {
