@@ -21,20 +21,21 @@ import java.util.UUID;
 @RequestMapping("/note")
 public class NoteController {
 
-//    private UsersService service;
-    public  Notes test() {
-        Notes notes = new Notes();
-        notes.setNameNotes("Test");
-        notes.setContent("blablabla");
-        notes.setId(UUID.randomUUID());
-        notes.setVisibility(Visibility.PRIVATE);
-        return notes;
-    }
+    private NotesService service;
 
+
+//    public Notes test() {
+//        Notes notes = new Notes();
+//        notes.setNameNotes("Test");
+//        notes.setContent("blablabla");
+//        notes.setId(UUID.randomUUID());
+//        notes.setVisibility(Visibility.PRIVATE);
+//        return notes;
+//    }
 
 
     @GetMapping("/list")
-    public ModelAndView mainUserPage(){
+    public ModelAndView mainUserPage() {
 
 
         ModelAndView modelAndView = new ModelAndView("note-list");
@@ -48,7 +49,7 @@ public class NoteController {
     }
 
     @GetMapping("/create")
-    public ModelAndView createNote(){
+    public ModelAndView createNote() {
         ModelAndView modelAndView = new ModelAndView("note-create");
 //        modelAndView.addObject("note", new Notes());
         return modelAndView;
@@ -70,31 +71,35 @@ public class NoteController {
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView editNote(@PathVariable("id") UUID uuid){
-//        Notes note = service.get(uuid);
+    public ModelAndView editNote(@PathVariable("id") UUID uuid) {
+        Notes note = service.getNoteByUuid(uuid);
 
         ModelAndView modelAndView = new ModelAndView("note-edit");
-        modelAndView.addObject("id", test().getId());
-        modelAndView.addObject("nameNotes", test().getNameNotes());
-        modelAndView.addObject("content", test().getContent());
-        modelAndView.addObject("variables", test().getVisibility().name());
-//        modelAndView.addObject("note", note);
+        modelAndView.addObject("id", note.getId());
+        modelAndView.addObject("nameNotes", note.getNameNotes());
+        modelAndView.addObject("content", note.getContent());
 //        modelAndView.addObject("variables", note.getVisibility().name());
+
         return modelAndView;
     }
 
     @GetMapping("/share/{id}")
-    public ModelAndView shareNote(@PathVariable("id") UUID uuid){
-//        Notes note = service.get(id);
-        ModelAndView modelAndView = new ModelAndView("noteById");
-//        modelAndView.addObject("note", note);
-        return modelAndView;
+    public ModelAndView shareNote(@PathVariable("id") UUID uuid) {
+        try {
+            Notes note = service.getNoteByUuid(uuid);
+            ModelAndView modelAndView = new ModelAndView("note-share");
+            modelAndView.addObject("getNameNotes", note.getNameNotes());
+            modelAndView.addObject("getContent", note.getContent());
+            modelAndView.addObject("getId", note.getId());
+            return modelAndView;
+        } catch (Exception ex) {
+            return new ModelAndView("note-share-error");
+        }
     }
 
     @PostMapping("/delete/{id}")
-    public void deleteNote(@PathVariable("id") UUID uuid, HttpServletResponse response){
-//        servie
-
+    public void deleteNote(@PathVariable("id") UUID uuid, HttpServletResponse response) {
+        service.deleteNoteByUuid(uuid);
         try {
             response.sendRedirect("/note/list");
         } catch (IOException e) {
