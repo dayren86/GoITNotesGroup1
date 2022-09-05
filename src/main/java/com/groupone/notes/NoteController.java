@@ -74,7 +74,7 @@ public class NoteController {
         modelAndView.addObject("id", note.getId());
         modelAndView.addObject("nameNotes", note.getNameNotes());
         modelAndView.addObject("content", note.getContent());
-//        modelAndView.addObject("variables", note.getVisibility().name());
+        modelAndView.addObject("access", note.getVisibility().name());
 
         return modelAndView;
     }
