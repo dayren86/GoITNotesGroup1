@@ -24,6 +24,10 @@ public class UsersService {
         return usersRepository.getReferenceById(userUuid);
     }
 
+    public Users getUserByName(String name) {
+        return usersRepository.findByEmail(name);
+    }
+
     public void updateUserByUuid(UUID userUuid, String email, String password, List<Notes> notes) {
         Users users = getUserByUuid(userUuid);
         users.setEmail(email);
