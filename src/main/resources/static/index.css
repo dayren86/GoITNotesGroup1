@@ -23,6 +23,16 @@ ul {
     padding: 0;
 }
 
+.hero-block {
+    display: flex;
+}
+
+.hero-links {
+    width: 50%;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
 /*===========BUTTONS=============*/
 .button {
     color: #ffffff;
@@ -45,6 +55,19 @@ ul {
     cursor: pointer;
     border: 2px solid black;
 }
+
+.logout-button{
+
+    text-decoration: none;
+    color: #ffffff;
+    background: mediumseagreen;
+    display: inline-block;
+    margin-left: auto;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 2px solid black;
+}
+
 
 .cancel-button {
     background: #ffffff;
@@ -140,6 +163,7 @@ ul {
 #setContent {
     width: 100%;
 }
+
 
 .login-input {
     height: 30px;

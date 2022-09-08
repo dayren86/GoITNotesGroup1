@@ -13,12 +13,16 @@
             rel="stylesheet"
     />
     <link rel="stylesheet" href="../index.css"/>
-
 </head>
 <body class="hero">
-<div>
+<div class="hero-block">
+    <div class="hero-links">
     <h1 class="title" th:text="'My notes  ' + ${count} +' pcs'"></h1>
     <a href="/note/create" class="create-button">Create</a>
+    </div>
+
+    <a href="/login" class="logout-button">Log out</a>
+
 </div>
 <br>
 <h3 th:if="${count} == 0" th:text="'You haven\'t notes yet..'"></h3>
