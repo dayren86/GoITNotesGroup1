@@ -22,8 +22,14 @@ public class MainController {
 
     @GetMapping("/register")
     public ModelAndView showRegistrationForm() {
-        ModelAndView modelAndView = new ModelAndView("signup_form");
+        ModelAndView modelAndView = new ModelAndView("register");
         modelAndView.addObject("user", new Users());
+        return modelAndView;
+    }
+
+    @GetMapping("/login")
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView("login");
         return modelAndView;
     }
 

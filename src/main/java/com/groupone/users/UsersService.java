@@ -24,10 +24,6 @@ public class UsersService {
         return usersRepository.getReferenceById(userUuid);
     }
 
-    public Users getUserByName(String name) {
-        return usersRepository.findByEmail(name);
-    }
-
     public void updateUserByUuid(UUID userUuid, String email, String password, List<Notes> notes) {
         Users users = getUserByUuid(userUuid);
         users.setEmail(email);
@@ -38,5 +34,9 @@ public class UsersService {
 
     public void deleteUserByUuid(UUID userUuid) {
         usersRepository.deleteById(userUuid);
+    }
+
+    public Users findByEmail(String email){
+        return usersRepository.findByEmail(email);
     }
 }

@@ -3,7 +3,6 @@ package com.groupone.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,15 +16,19 @@ public class DefaultSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/note/*").authenticated()
-                .anyRequest()
-                .authenticated()
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("/register").permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .httpBasic()
+                    .httpBasic()
                 .and()
-                .formLogin(Customizer.withDefaults());
+                    .formLogin()
+                    .loginPage("/login").permitAll()
+                .and()
+                    .logout()
+                    .permitAll()
+                    .logoutSuccessUrl("/");
         return http.build();
     }
 
