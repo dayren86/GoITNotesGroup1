@@ -18,7 +18,7 @@ public class Users {
 
     private String password;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private List<Notes> notesList;
 }

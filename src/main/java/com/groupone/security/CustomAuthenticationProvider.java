@@ -8,6 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -15,11 +17,20 @@ import java.util.Objects;
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final CustomUserDetailsService customUserDetailsService;
+    private static BCryptPasswordEncoder passwordEcorder = new BCryptPasswordEncoder();
+
+
+    public Boolean doPasswordsMatch(String rawPassword,String encodedPassword) {
+        return passwordEcorder.matches(rawPassword, encodedPassword);
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
+
+        System.out.println("username = " + username);
+        System.out.println("password = " + password);
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
@@ -32,7 +43,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     private Authentication checkPassword(UserDetails user, String rawPassword) {
-        if (Objects.equals(rawPassword, user.getPassword())) {
+        System.out.println("rawPassword = " + rawPassword);
+        System.out.println("user.getPassword() = " + user.getPassword());
+        if (doPasswordsMatch(rawPassword, user.getPassword())) {
             User innerUser = new User(
                     user.getUsername(),
                     user.getPassword(),
