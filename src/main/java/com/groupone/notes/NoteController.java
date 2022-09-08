@@ -1,20 +1,14 @@
 package com.groupone.notes;
 
 
-import com.groupone.notes.Notes;
-import com.groupone.notes.Visibility;
-import com.groupone.users.Users;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.UUID;
-
 
 @Controller
 @AllArgsConstructor
@@ -22,17 +16,6 @@ import java.util.UUID;
 public class NoteController {
 
     private NotesService service;
-
-
-//    public Notes test() {
-//        Notes notes = new Notes();
-//        notes.setNameNotes("Test");
-//        notes.setContent("blablabla");
-//        notes.setId(UUID.randomUUID());
-//        notes.setVisibility(Visibility.PRIVATE);
-//        return notes;
-//    }
-
 
     @GetMapping("/list")
     public ModelAndView mainUserPage() {
@@ -92,7 +75,6 @@ public class NoteController {
             throw new RuntimeException(e);
         }
     }
-
 
     @GetMapping("/share/{id}")
     public ModelAndView shareNote(@PathVariable("id") UUID uuid) {
