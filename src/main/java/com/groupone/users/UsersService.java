@@ -15,7 +15,6 @@ public class UsersService {
 
     public void createUser(String email, String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         String encodedPassword = passwordEncoder.encode(password);
 
         Users users = new Users();
