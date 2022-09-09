@@ -4,6 +4,7 @@ import com.groupone.users.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,17 +14,19 @@ public class NotesService {
     private final NotesRepository notesRepository;
     private final UsersService usersService;
 
-    public void createNote(String nameNotes, String content, Visibility access) {
+    public void createNote(String nameNotes, String content, Visibility access, String email) {
         Notes notes = new Notes();
         notes.setNameNotes(nameNotes);
         notes.setContent(content);
         notes.setVisibility(access);
-//        notes.setUsers(usersService.getUserByUuid(userUuid));
+        notes.setUsers(usersService.findByEmail(email));
         notesRepository.save(notes);
     }
 
-    public List<Notes> getAllNotes() {
-        return notesRepository.findAll();
+    public List<Notes> getAllNotes(String email) {
+        //TODO make from repository
+        return notesRepository.findAll().stream()
+                .filter(it -> it.getUsers().equals(usersService.findByEmail(email))).toList();
     }
 
     public Notes getNoteByUuid(UUID uuid) {
@@ -35,8 +38,6 @@ public class NotesService {
         notes.setNameNotes(nameNotes);
         notes.setContent(content);
         notes.setVisibility(visibility);
-//        notes.setVisibility(visibility);
-//        notes.setUsers(usersService.getUserByUuid(userUuid));
         notesRepository.save(notes);
     }
 

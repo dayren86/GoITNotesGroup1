@@ -4,8 +4,12 @@ package com.groupone.notes;
 import com.groupone.notes.Notes;
 import com.groupone.notes.Visibility;
 import com.groupone.users.Users;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.val;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +25,7 @@ import java.util.UUID;
 @RequestMapping("/note")
 public class NoteController {
 
-    private NotesService service;
+    private final NotesService service;
 
 
 //    public Notes test() {
@@ -35,12 +39,12 @@ public class NoteController {
 
 
     @GetMapping("/list")
-    public ModelAndView mainUserPage() {
-
+    public ModelAndView mainUserPage(HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
 
         ModelAndView modelAndView = new ModelAndView("note-list");
-        modelAndView.addObject("count", service.getAllNotes().size());
-        modelAndView.addObject("listOfNotes", service.getAllNotes());
+        modelAndView.addObject("count", service.getAllNotes(email).size());
+        modelAndView.addObject("listOfNotes", service.getAllNotes(email));
 
         return modelAndView;
     }
@@ -56,9 +60,12 @@ public class NoteController {
     public void saveNote(@RequestParam(name = "access") String access,
                          @RequestParam(name = "setNameNotes") String title,
                          @RequestParam(name = "setContent") String content,
+                         HttpServletRequest request,
                          HttpServletResponse response) {
 
-        service.createNote(title, content, Visibility.valueOf(access));
+        String email = request.getUserPrincipal().getName();
+        service.createNote(title, content, Visibility.valueOf(access), email);
+
         try {
             response.sendRedirect("list");
         } catch (IOException e) {
@@ -95,14 +102,24 @@ public class NoteController {
 
 
     @GetMapping("/share/{id}")
-    public ModelAndView shareNote(@PathVariable("id") UUID uuid) {
+    public ModelAndView shareNote(@PathVariable("id") UUID uuid,
+                                  HttpServletResponse response,
+                                  HttpServletRequest request) {
         try {
             Notes note = service.getNoteByUuid(uuid);
-            ModelAndView modelAndView = new ModelAndView("note-share");
-            modelAndView.addObject("getNameNotes", note.getNameNotes());
-            modelAndView.addObject("getContent", note.getContent());
-            modelAndView.addObject("getId", note.getId());
-            return modelAndView;
+            if (note.getVisibility().equals(Visibility.PUBLIC) ||
+                    note.getUsers().getEmail().equals(request.getUserPrincipal().getName())) {
+
+                ModelAndView modelAndView = new ModelAndView("note-share");
+                modelAndView.addObject("getNameNotes", note.getNameNotes());
+                modelAndView.addObject("getContent", note.getContent());
+                modelAndView.addObject("getId", note.getId());
+                return modelAndView;
+            }else {
+                response.getWriter().write("ypu not that guy");
+                return null;
+            }
+
         } catch (Exception ex) {
             return new ModelAndView("note-share-error");
         }
