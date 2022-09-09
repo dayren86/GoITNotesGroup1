@@ -7,6 +7,4 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface NotesRepository extends JpaRepository<Notes, UUID> {
-    @Query("SELECT *")
-    Users getByUserId();
 }
