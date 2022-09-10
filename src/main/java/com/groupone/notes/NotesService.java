@@ -23,11 +23,6 @@ public class NotesService {
         notesRepository.save(notes);
     }
 
-    public List<Notes> getAllNotes(String email) {
-        //TODO make from repository
-        return notesRepository.findAll().stream()
-                .filter(it -> it.getUsers().equals(usersService.findByEmail(email))).toList();
-    }
 
     public Notes getNoteByUuid(UUID uuid) {
         return notesRepository.getReferenceById(uuid);

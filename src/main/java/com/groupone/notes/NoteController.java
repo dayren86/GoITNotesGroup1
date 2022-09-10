@@ -1,22 +1,16 @@
 package com.groupone.notes;
 
 
-import com.groupone.notes.Notes;
-import com.groupone.notes.Visibility;
 import com.groupone.users.Users;
+import com.groupone.users.UsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.val;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.UUID;
 
 
@@ -26,25 +20,17 @@ import java.util.UUID;
 public class NoteController {
 
     private final NotesService service;
-
-
-//    public Notes test() {
-//        Notes notes = new Notes();
-//        notes.setNameNotes("Test");
-//        notes.setContent("blablabla");
-//        notes.setId(UUID.randomUUID());
-//        notes.setVisibility(Visibility.PRIVATE);
-//        return notes;
-//    }
+    private final UsersService usersService;
 
 
     @GetMapping("/list")
     public ModelAndView mainUserPage(HttpServletRequest request) {
         String email = request.getUserPrincipal().getName();
+        Users user = usersService.findByEmail(email);
 
         ModelAndView modelAndView = new ModelAndView("note-list");
-        modelAndView.addObject("count", service.getAllNotes(email).size());
-        modelAndView.addObject("listOfNotes", service.getAllNotes(email));
+        modelAndView.addObject("count", user.getNotesList().size());
+        modelAndView.addObject("listOfNotes", user.getNotesList());
 
         return modelAndView;
     }
@@ -101,6 +87,7 @@ public class NoteController {
     }
 
 
+    //TODO проверка на null для note
     @GetMapping("/share/{id}")
     public ModelAndView shareNote(@PathVariable("id") UUID uuid,
                                   HttpServletResponse response,
@@ -116,11 +103,10 @@ public class NoteController {
                 modelAndView.addObject("getId", note.getId());
                 return modelAndView;
             }else {
-                response.getWriter().write("ypu not that guy");
-                return null;
+                return new ModelAndView("note-share-error");
             }
 
-        } catch (Exception ex) {
+        } catch (NullPointerException ex) {
             return new ModelAndView("note-share-error");
         }
     }

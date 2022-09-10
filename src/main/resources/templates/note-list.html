@@ -12,8 +12,9 @@
 <body class="bg-success p-5 bg-opacity-10">
 <div class="row">
     <h1 class="col" th:text="'My notes  ' + ${count} +' pcs'"></h1>
-    <div class="col">
-    <a href="/note/create" class="btn btn-success">Create</a>
+    <div class="p-3 col-sm-auto ms-auto justify-content-end">
+        <a href="/note/create" class="btn btn-success">Create</a>
+        <a href="/login" class="btn btn-outline-success">Log out</a>
     </div>
 </div>
 <br>
@@ -33,8 +34,8 @@
         <tbody>
         <tr th:each="notes: ${listOfNotes}">
             <td th:text="${notes.nameNotes}"></td>
-            <td th:text="${notes.content}"></td>
-            <td th:text="${notes.visibility}"></td>
+            <td th:text="${#strings.length(notes.content)} >= 15 ? ${#strings.substring(notes.content,0,15)} + '...' : ${notes.content}"></td>
+            <td th:text="${#strings.toLowerCase(notes.visibility)}"></td>
 
             <td>
                 <ul class="list-group list-group-horizontal ">
