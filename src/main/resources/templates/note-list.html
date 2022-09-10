@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -6,26 +6,22 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My notes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
-            rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../index.css"/>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
-<body class="hero">
-<div>
-    <h1 class="title" th:text="'My notes  ' + ${count} +' pcs'"></h1>
-    <a href="/note/create" class="create-button">Create</a>
+<body class="bg-success p-5 bg-opacity-10">
+<div class="row">
+    <h1 class="col" th:text="'My notes  ' + ${count} +' pcs'"></h1>
+    <div class="col">
+    <a href="/note/create" class="btn btn-success">Create</a>
+    </div>
 </div>
 <br>
 <h3 th:if="${count} == 0" th:text="'You haven\'t notes yet..'"></h3>
 <br>
 <div class="frame" th:if="${count} != 0">
 
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <th>Title</th>
@@ -39,13 +35,12 @@
             <td th:text="${notes.nameNotes}"></td>
             <td th:text="${notes.content}"></td>
             <td th:text="${notes.visibility}"></td>
-            <td th:text="${notes.id}"></td>
-            <td>
-                <ul>
-                    <li>
-                        <form class="action-button" th:action="'delete/'+ ${notes.id}" method="post">
 
-                            <button class="action-button" type="submit">
+            <td>
+                <ul class="list-group list-group-horizontal ">
+                    <li class="list-group-item p-0 bg-transparent">
+                        <form class="action-button" th:action="'delete/'+ ${notes.id}" method="post">
+                            <button class="btn" type="submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
                                      height="20">
                                     <path d="M21,4H17.9A5.009,5.009,0,0,0,13,0H11A5.009,5.009,0,0,0,6.1,4H3A1,1,0,0,0,3,6H4V19a5.006,5.006,0,0,0,5,5h6a5.006,5.006,0,0,0,5-5V6h1a1,1,0,0,0,0-2ZM11,2h2a3.006,3.006,0,0,1,2.829,2H8.171A3.006,3.006,0,0,1,11,2Zm7,17a3,3,0,0,1-3,3H9a3,3,0,0,1-3-3V6H18Z"/>
@@ -56,19 +51,19 @@
                             </button>
                         </form>
                     </li>
-                    <li>
+                    <li class="list-group-item p-0 bg-transparent">
                         <form class="action-button" th:action="'edit/'+ ${notes.id}"  method="get">
 
-                            <button class="action-button" type="submit">
+                            <button class="btn" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
                              height="20">
                             <path d="M22.853,1.148a3.626,3.626,0,0,0-5.124,0L1.465,17.412A4.968,4.968,0,0,0,0,20.947V23a1,1,0,0,0,1,1H3.053a4.966,4.966,0,0,0,3.535-1.464L22.853,6.271A3.626,3.626,0,0,0,22.853,1.148ZM5.174,21.122A3.022,3.022,0,0,1,3.053,22H2V20.947a2.98,2.98,0,0,1,.879-2.121L15.222,6.483l2.3,2.3ZM21.438,4.857,18.932,7.364l-2.3-2.295,2.507-2.507a1.623,1.623,0,1,1,2.295,2.3Z"/>
                         </svg>
                             </button>
                     </form></li>
-                    <li>
+                    <li class="list-group-item p-0 bg-transparent">
                         <form class="action-button" th:action="'share/'+ ${notes.id}">
-                            <button class="action-button" type="submit">
+                            <button class="btn" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
                              height="20">
                             <path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z"/>

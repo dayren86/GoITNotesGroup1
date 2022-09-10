@@ -53,7 +53,6 @@ public class DefaultSecurityConfig {
                     .logoutSuccessUrl("/");
         return http.build();
     }
-
     @Autowired
     public void injectCustomAuthProvider(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
