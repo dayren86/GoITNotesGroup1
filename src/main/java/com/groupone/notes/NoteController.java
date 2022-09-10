@@ -4,6 +4,7 @@ package com.groupone.notes;
 import com.groupone.notes.Notes;
 import com.groupone.notes.Visibility;
 import com.groupone.users.Users;
+import com.groupone.users.UsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -26,25 +27,17 @@ import java.util.UUID;
 public class NoteController {
 
     private final NotesService service;
-
-
-//    public Notes test() {
-//        Notes notes = new Notes();
-//        notes.setNameNotes("Test");
-//        notes.setContent("blablabla");
-//        notes.setId(UUID.randomUUID());
-//        notes.setVisibility(Visibility.PRIVATE);
-//        return notes;
-//    }
+    private final UsersService uservice;
 
 
     @GetMapping("/list")
     public ModelAndView mainUserPage(HttpServletRequest request) {
         String email = request.getUserPrincipal().getName();
+        Users byEmail = uservice.findByEmail(email);
 
         ModelAndView modelAndView = new ModelAndView("note-list");
-        modelAndView.addObject("count", service.getAllNotes(email).size());
-        modelAndView.addObject("listOfNotes", service.getAllNotes(email));
+        modelAndView.addObject("count", byEmail.getNotesList().size());
+        modelAndView.addObject("listOfNotes", byEmail.getNotesList());
 
         return modelAndView;
     }
@@ -116,8 +109,7 @@ public class NoteController {
                 modelAndView.addObject("getId", note.getId());
                 return modelAndView;
             }else {
-                response.getWriter().write("ypu not that guy");
-                return null;
+                return new ModelAndView("note-share-error");
             }
 
         } catch (Exception ex) {
