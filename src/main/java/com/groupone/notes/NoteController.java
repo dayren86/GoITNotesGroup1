@@ -3,6 +3,7 @@ package com.groupone.notes;
 
 import com.groupone.users.Users;
 import com.groupone.users.UsersService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -43,11 +44,14 @@ public class NoteController {
     }
 
     @PostMapping("/save")
-    public void saveNote(@RequestParam(name = "access") String access,
+    public ModelAndView saveNote(@RequestParam(name = "access") String access,
                          @RequestParam(name = "setNameNotes") String title,
                          @RequestParam(name = "setContent") String content,
                          HttpServletRequest request,
                          HttpServletResponse response) {
+        if (title.length() == 0) {
+            return createNote().addObject("error", 0);
+        }
 
         String email = request.getUserPrincipal().getName();
         service.createNote(title, content, Visibility.valueOf(access), email);
@@ -57,6 +61,7 @@ public class NoteController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     @GetMapping("/edit/{id}")
@@ -73,24 +78,23 @@ public class NoteController {
     }
 
     @PostMapping("/edit/{id}/save")
-    public void updateNote2(@PathVariable("id") UUID uuid,
-                            @RequestParam(name = "access") String access,
-                            @RequestParam(name = "setNameNotes") String title,
-                            @RequestParam(name = "setContent") String content,
-                            HttpServletResponse response) {
-        service.updateNote(uuid, title, content, Visibility.valueOf(access));
-        try {
-            response.sendRedirect("/note/list");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public ModelAndView updateNote(@PathVariable("id") UUID uuid,
+                                   @RequestParam(name = "access") String access,
+                                   @RequestParam(name = "setNameNotes") String title,
+                                   @RequestParam(name = "setContent") String content,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws IOException {
+        if (title.length() == 0) {
+            return editNote(uuid).addObject("error", 0);
         }
+        service.updateNote(uuid, title, content, Visibility.valueOf(access));
+        response.sendRedirect("/note/list");
+        return null;
     }
 
 
-    //TODO проверка на null для note
     @GetMapping("/share/{id}")
     public ModelAndView shareNote(@PathVariable("id") UUID uuid,
-                                  HttpServletResponse response,
                                   HttpServletRequest request) {
         try {
             Notes note = service.getNoteByUuid(uuid);
@@ -102,11 +106,10 @@ public class NoteController {
                 modelAndView.addObject("getContent", note.getContent());
                 modelAndView.addObject("getId", note.getId());
                 return modelAndView;
-            }else {
+            } else {
                 return new ModelAndView("note-share-error");
             }
-
-        } catch (NullPointerException ex) {
+        } catch (EntityNotFoundException ex) {
             return new ModelAndView("note-share-error");
         }
     }

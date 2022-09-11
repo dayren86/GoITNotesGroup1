@@ -19,11 +19,14 @@
 </head>
 
 <body class="bg-success p-2 bg-opacity-10">
+
 <div class="container col-5">
 
-    <h3 class="registration-error" th:text="${registrationError}"></h3>
+
+    <h4 style="color:Tomato;" th:if="${error} == 0" th:text="'Error - username must be between 5 and 20 characters'" align="center"></h4>
 
     <h1 class="text-center">Registration</h1>
+
 
     <form class="reg-form" action="/register" method="post">
         <div class="d-grid gap-2">
@@ -40,20 +43,3 @@
 </body>
 </html>
 
-<!--<body class="hero">-->
-<!--<div class="container">-->
-
-<!--    <h3 class="registration-error" th:text="${registrationError}"></h3>-->
-
-<!--    <h1 class="center">Registration</h1>-->
-
-<!--    <form class="reg-form" action="/register" method="post">-->
-<!--        <label>Login-->
-<!--            <input type="text" class="login-input" value="" placeholder="Login" name="setEmail" id="setEmail"></label>-->
-<!--        <label>Password-->
-<!--            <input type="text" class="login-input" value="" placeholder="Password" name="setPassword" id="setPassword"></label>-->
-<!--        <button class="button sing-up-button" type="submit">Sign up</button>-->
-<!--    </form>-->
-<!--</div>-->
-
-<!--</body>-->

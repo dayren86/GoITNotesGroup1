@@ -3,7 +3,6 @@ package com.groupone.security;
 import com.groupone.users.Users;
 import com.groupone.users.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,8 +15,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UsersService usersService;
+    private final UsersService usersService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
