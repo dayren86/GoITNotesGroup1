@@ -8,27 +8,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final CustomUserDetailsService customUserDetailsService;
-    private static BCryptPasswordEncoder passwordEncorder = new BCryptPasswordEncoder();
-
-
-    public Boolean doPasswordsMatch(String rawPassword,String encodedPassword) {
-        return passwordEncorder.matches(rawPassword, encodedPassword);
-    }
+    private final CryptConfig cryptConfig;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-
-        System.out.println("username = " + username);
-        System.out.println("password = " + password);
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
@@ -41,9 +33,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     private Authentication checkPassword(UserDetails user, String rawPassword) {
-        System.out.println("rawPassword = " + rawPassword);
-        System.out.println("user.getPassword() = " + user.getPassword());
-        if (doPasswordsMatch(rawPassword, user.getPassword())) {
+//        System.out.println("rawPassword = " + rawPassword);
+//        System.out.println("user.getPassword() = " + user.getPassword());
+
+        if (cryptConfig.passwordEncoder().matches(rawPassword, user.getPassword())) {
             User innerUser = new User(
                     user.getUsername(),
                     user.getPassword(),

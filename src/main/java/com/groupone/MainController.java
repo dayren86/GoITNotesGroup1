@@ -4,6 +4,7 @@ import com.groupone.users.Users;
 import com.groupone.users.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,7 @@ public class MainController {
     UsersService usersService;
 
     @GetMapping("/")
-    public String showHomePage(){
+    public String showHomePage() {
         return "redirect:/note/list";
     }
 
@@ -27,14 +28,15 @@ public class MainController {
     }
 
     @PostMapping("/register")
-    public ModelAndView processRegister(@RequestParam(name = "setEmail") String email,
-                                        @RequestParam(name = "setPassword") String password) {
+    public String processRegister(@RequestParam(name = "setEmail") String email,
+                                  @RequestParam(name = "setPassword") String password,
+                                  Model model) {
         if (email.length() < 5 || email.length() > 20) {
-            return showRegistrationForm().addObject("error", 0);
-        } else {
-            usersService.createUser(email, password);
-            return login();
+            model.addAttribute("error", 0);
+            return "register";
         }
+        usersService.createUser(email, password);
+        return "redirect:/login";
     }
 
     @GetMapping("/login")

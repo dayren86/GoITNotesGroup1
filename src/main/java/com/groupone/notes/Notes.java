@@ -1,6 +1,7 @@
 package com.groupone.notes;
 
 import com.groupone.users.Users;
+
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package com.groupone.users;
 
 import com.groupone.notes.Notes;
+import com.groupone.security.CryptConfig;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +12,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsersService {
     private final UsersRepository usersRepository;
+    private final CryptConfig cryptConfig;
 
     public void createUser(String email, String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(password);
+        String encodedPassword = cryptConfig.passwordEncoder().encode(password);
 
         Users users = new Users();
         users.setEmail(email);
         users.setPassword(encodedPassword);
-//        users.setNotesList(notes);
+
         usersRepository.save(users);
     }
 

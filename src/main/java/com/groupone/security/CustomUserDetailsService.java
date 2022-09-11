@@ -3,6 +3,7 @@ package com.groupone.security;
 import com.groupone.users.Users;
 import com.groupone.users.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +21,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = usersService.findByEmail(username);
-
+        if (user == null ) {
+            throw new BadCredentialsException("Bad credential");
+        }
 
         return new UserDetails() {
             @Override

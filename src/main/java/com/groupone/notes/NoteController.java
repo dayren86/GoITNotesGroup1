@@ -1,6 +1,5 @@
 package com.groupone.notes;
 
-
 import com.groupone.users.Users;
 import com.groupone.users.UsersService;
 import jakarta.persistence.EntityNotFoundException;
@@ -8,21 +7,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.UUID;
 
-
 @Controller
 @AllArgsConstructor
 @RequestMapping("/note")
 public class NoteController {
-
     private final NotesService service;
     private final UsersService usersService;
-
 
     @GetMapping("/list")
     public ModelAndView mainUserPage(HttpServletRequest request) {
@@ -39,29 +36,25 @@ public class NoteController {
     @GetMapping("/create")
     public ModelAndView createNote() {
         ModelAndView modelAndView = new ModelAndView("note-create");
-        modelAndView.addObject("note", new Notes());
         return modelAndView;
     }
 
     @PostMapping("/save")
-    public ModelAndView saveNote(@RequestParam(name = "access") String access,
-                         @RequestParam(name = "setNameNotes") String title,
-                         @RequestParam(name = "setContent") String content,
-                         HttpServletRequest request,
-                         HttpServletResponse response) {
-        if (title.length() == 0) {
-            return createNote().addObject("error", 0);
+    public String saveNote(@RequestParam(name = "access") String access,
+                           @RequestParam(name = "setNameNotes") String title,
+                           @RequestParam(name = "setContent") String content,
+                           Model model,
+                           HttpServletRequest request) {
+        if (title.length() < 5 || title.length() > 100 ) {
+            model.addAttribute("error", 0);
+            model.addAttribute("content", content);
+            return "note-create";
         }
 
         String email = request.getUserPrincipal().getName();
         service.createNote(title, content, Visibility.valueOf(access), email);
 
-        try {
-            response.sendRedirect("list");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+        return "redirect:/note/list";
     }
 
     @GetMapping("/edit/{id}")
@@ -78,18 +71,19 @@ public class NoteController {
     }
 
     @PostMapping("/edit/{id}/save")
-    public ModelAndView updateNote(@PathVariable("id") UUID uuid,
+    public String updateNote(@PathVariable("id") UUID uuid,
                                    @RequestParam(name = "access") String access,
                                    @RequestParam(name = "setNameNotes") String title,
                                    @RequestParam(name = "setContent") String content,
-                                   HttpServletRequest request,
-                                   HttpServletResponse response) throws IOException {
-        if (title.length() == 0) {
-            return editNote(uuid).addObject("error", 0);
+                                   Model model) {
+        if (title.length() < 5 || title.length() > 100 ) {
+            model.addAttribute("error", 0);
+            model.addAttribute("content", content);
+            return "note-edit";
         }
         service.updateNote(uuid, title, content, Visibility.valueOf(access));
-        response.sendRedirect("/note/list");
-        return null;
+
+        return"redirect:/note/list";
     }
 
 
