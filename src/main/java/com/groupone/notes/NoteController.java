@@ -50,7 +50,7 @@ public class NoteController {
             model.addAttribute("content", content);
             return "note-create";
         }
-
+        System.out.println(content);
         String email = request.getUserPrincipal().getName();
         service.createNote(title, content, Visibility.valueOf(access), email);
 

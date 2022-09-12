@@ -11,7 +11,7 @@
 <body class="bg-success p-2 bg-opacity-10">
 <h1 class="title" th:text="${getNameNotes}"> </h1>
 <br>
-<h4 th:text="${getContent}"></h4>
+<div th:utext="${getContent}"></div>
 <input type="hidden" th:value="${getId}">
 </body>
 </html>
