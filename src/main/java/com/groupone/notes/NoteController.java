@@ -79,6 +79,8 @@ public class NoteController {
         if (title.length() < 5 || title.length() > 100 ) {
             model.addAttribute("error", 0);
             model.addAttribute("content", content);
+            model.addAttribute("access", access);
+            model.addAttribute("nameNotes", "");
             return "note-edit";
         }
         service.updateNote(uuid, title, content, Visibility.valueOf(access));
