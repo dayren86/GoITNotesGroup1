@@ -17,8 +17,8 @@
 </head>
 <body class="bg-success p-5 bg-opacity-10">
 
-<h4 style="color:Tomato;" th:if="${error} == 0" th:text="'Error - title must be between 5 and 100 characters'"
-    align="center"></h4>
+<h6 style="color:Tomato;" th:if="${#fields.hasErrors('notes.content')}" th:errors="${notes.content}"  align="center"></h6>
+<h6 style="color:Tomato;" th:if="${#fields.hasErrors('notes.nameNotes')}" th:errors="${notes.nameNotes}"  align="center"></h6>
 
 <h1>Edit note</h1>
 
@@ -27,22 +27,22 @@
         <label for="setNameNotes" class="col-sm-1 col-form-label">Title</label>
         <div class="col-sm-5">
             <input type="text" class="form-control" th:value="${nameNotes}" minlength="5" maxlength="100"
-                   name="setNameNotes" id="setNameNotes">
+                   name="setNameNotes" id="setNameNotes" th:field="${notes.nameNotes}">
         </div>
     </div>
-    <textarea class="form-control" rows="20" th:text="${content}" minlength="5" maxlength="10000" name="setContent"
-              id="summernote" ></textarea>
+    <textarea class="form-control" rows="20" minlength="5" maxlength="10000" name="setContent"
+              id="summernote"  th:field="${notes.content}"></textarea>
     <input type="hidden" th:value="${id}">
     <div class="row">
         <div class="p-3 col-sm-6">
             <div class="form-check-inline">
                 <input class="form-check-input" type="radio" id="private" name="access" value="PRIVATE"
-                       th:checked="${access} == PRIVATE">
+                       th:checked="${access} == PRIVATE"  th:field="${notes.visibility}">
                 <label class="form-check-label" for="private">Private</label>
             </div>
             <div class="form-check-inline">
                 <input class="form-check-input" type="radio" id="public" name="access" value="PUBLIC"
-                       th:checked="${access} == PUBLIC">
+                       th:checked="${access} == PUBLIC" th:field="${notes.visibility}">
                 <label class="form-check-label" for="public">Public</label>
             </div>
         </div>

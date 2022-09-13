@@ -16,22 +16,25 @@
 </head>
 <body class="bg-success p-5 bg-opacity-10">
 
-<h6 style="color:Tomato;" th:if="${error} == 0" th:text="'Error - title must be between 5 and 100 characters'"
-    align="center"></h6>
+
+<h6 style="color:Tomato;" th:if="${#fields.hasErrors('notes.content')}" th:errors="${notes.content}"  align="center"></h6>
+<h6 style="color:Tomato;" th:if="${#fields.hasErrors('notes.nameNotes')}" th:errors="${notes.nameNotes}"  align="center"></h6>
+
 <h1>Create note</h1>
 
 <form class="" action="/note/save" method="post">
+
     <div class="mb-3 row">
         <label for="setNameNotes" class="col-sm-1 col-form-label">Title</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" value="" minlength="5" maxlength="100" name="setNameNotes" required
-                   id="setNameNotes">
+            <input type="text" class="form-control" value="" name="setNameNotes" required id="setNameNotes" th:field="${notes.nameNotes}">
         </div>
     </div>
 
-    <textarea class="form-control" rows="20" cols="80" minlength="5" maxlength="10000"
-              placeholder="Enter your note here..." name="setContent"
-              id="summernote" th:text="${content}"></textarea>
+    <textarea class="form-control" rows="20" cols="80" minlength="5" maxlength="10000" placeholder="Enter your note here..." name="setContent"
+              id="summernote" th:text="${content}" th:field="${notes.content}">
+    </textarea>
+
     <div class="row">
         <div class="p-3 col-sm-6">
             <div class="form-check-inline">

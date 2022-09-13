@@ -5,13 +5,16 @@ import com.groupone.users.UsersService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -25,67 +28,68 @@ public class NoteController {
     public ModelAndView mainUserPage(HttpServletRequest request) {
         String email = request.getUserPrincipal().getName();
         Users user = usersService.findByEmail(email);
+        List<Notes> notesList = user.getNotesList();
 
         ModelAndView modelAndView = new ModelAndView("note-list");
-        modelAndView.addObject("count", user.getNotesList().size());
-        modelAndView.addObject("listOfNotes", user.getNotesList());
+        modelAndView.addObject("count", notesList.size());
+        modelAndView.addObject("listOfNotes", notesList);
 
         return modelAndView;
     }
 
     @GetMapping("/create")
-    public ModelAndView createNote() {
-        ModelAndView modelAndView = new ModelAndView("note-create");
-        return modelAndView;
+    public ModelAndView createNote(@ModelAttribute("notes") Notes notes) {
+        return new ModelAndView("note-create");
     }
 
     @PostMapping("/save")
-    public String saveNote(@RequestParam(name = "access") String access,
-                           @RequestParam(name = "setNameNotes") String title,
-                           @RequestParam(name = "setContent") String content,
-                           Model model,
+    public String saveNote(@Valid Notes notes,
+                           BindingResult bindingResult,
+                           @RequestParam(name = "access") String access,
                            HttpServletRequest request) {
-        if (title.length() < 5 || title.length() > 100 ) {
-            model.addAttribute("error", 0);
-            model.addAttribute("content", content);
+        if (bindingResult.hasErrors()) {
             return "note-create";
         }
-        System.out.println(content);
+        System.out.println(notes.getContent());
+
         String email = request.getUserPrincipal().getName();
-        service.createNote(title, content, Visibility.valueOf(access), email);
+        service.createNote(notes.getNameNotes(), notes.getContent(), Visibility.valueOf(access), email);
 
         return "redirect:/note/list";
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView editNote(@PathVariable("id") UUID uuid) {
+    public ModelAndView editNote(@PathVariable("id") UUID uuid,
+                                 HttpServletRequest request) {
         Notes note = service.getNoteByUuid(uuid);
 
-        ModelAndView modelAndView = new ModelAndView("note-edit");
-        modelAndView.addObject("id", note.getId());
-        modelAndView.addObject("nameNotes", note.getNameNotes());
-        modelAndView.addObject("content", note.getContent());
-        modelAndView.addObject("access", note.getVisibility().name());
+        if (note.getUsers().getEmail().equals(request.getUserPrincipal().getName())) {
 
-        return modelAndView;
+            ModelAndView modelAndView = new ModelAndView("note-edit");
+            modelAndView.addObject("notes", note);
+
+            return modelAndView;
+        } else {
+            return new ModelAndView("note-share-error");
+        }
     }
 
     @PostMapping("/edit/{id}/save")
     public String updateNote(@PathVariable("id") UUID uuid,
-                                   @RequestParam(name = "access") String access,
-                                   @RequestParam(name = "setNameNotes") String title,
-                                   @RequestParam(name = "setContent") String content,
-                                   Model model) {
-        if (title.length() < 5 || title.length() > 100 ) {
-            model.addAttribute("error", 0);
-            model.addAttribute("content", content);
-            model.addAttribute("access", access);
-            model.addAttribute("nameNotes", "");
+                             @Valid Notes notes,
+                             BindingResult bindingResult,
+//                             @RequestParam(name = "access") String access,
+                             Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("content", notes.getContent());
+            model.addAttribute("access", notes.getVisibility());
+            model.addAttribute("nameNotes", notes.getNameNotes());
             return "note-edit";
         }
-        service.updateNote(uuid, title, content, Visibility.valueOf(access));
 
-        return"redirect:/note/list";
+        service.updateNote(uuid, notes.getNameNotes(), notes.getContent(), notes.getVisibility());
+
+        return "redirect:/note/list";
     }
 
 

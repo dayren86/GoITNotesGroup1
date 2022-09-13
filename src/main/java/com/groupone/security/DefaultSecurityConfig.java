@@ -16,21 +16,24 @@ public class DefaultSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                    .csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/register").permitAll()
-                    .anyRequest().authenticated()
-                .and()
-                    .httpBasic()
-                .and()
-                    .formLogin()
-                    .loginPage("/login").permitAll()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/register").permitAll()
+                .anyRequest().authenticated()
+                    .and()
+                .httpBasic()
+                    .and()
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/note/list", true)
                 .and()
                     .logout()
-                    .permitAll()
-                    .logoutSuccessUrl("/");
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .permitAll();
         return http.build();
     }
+
     @Autowired
     public void injectCustomAuthProvider(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
