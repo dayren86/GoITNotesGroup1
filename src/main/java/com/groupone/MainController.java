@@ -35,7 +35,13 @@ public class MainController {
             model.addAttribute("error", 0);
             return "register";
         }
+        if (usersService.findByEmail(email) != null) {
+            model.addAttribute("errorEmail", 0);
+            return "register";
+        }
+
         usersService.createUser(email, password);
+
         return "redirect:/login";
     }
 

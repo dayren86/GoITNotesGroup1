@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = usersService.findByEmail(username);
-        if (user == null ) {
+        if (user == null) {
             throw new BadCredentialsException("Bad credential");
         }
 

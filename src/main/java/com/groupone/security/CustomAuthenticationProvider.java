@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -33,9 +32,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     private Authentication checkPassword(UserDetails user, String rawPassword) {
-//        System.out.println("rawPassword = " + rawPassword);
-//        System.out.println("user.getPassword() = " + user.getPassword());
-
         if (cryptConfig.passwordEncoder().matches(rawPassword, user.getPassword())) {
             User innerUser = new User(
                     user.getUsername(),
