@@ -6,5 +6,11 @@ pipeline {
                 sh './gradlew release'
             }
         }
+
+        stage('deploy') {
+                    steps {
+                        sh 'java -jar /var/lib/jenkins/workspace/finalRelease/noteApp.jar'
+                    }
+                }
     }
 }
