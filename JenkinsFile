@@ -7,7 +7,8 @@ pipeline {
             }
         }
         stage('deploy') {
-            sh 'sudo java -jar /var/lib/jenkins/workspace/finalRelease/notesApp.jar'
+            steps{
+                sh 'sudo java -jar /var/lib/jenkins/workspace/finalRelease/notesApp.jar'
             }
         }
     }
