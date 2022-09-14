@@ -6,5 +6,9 @@ pipeline {
                 sh './gradlew release'
             }
         }
+        stage('deploy') {
+            sh 'sudo java -jar /var/lib/jenkins/workspace/finalRelease/notesApp.jar'
+            }
+        }
     }
 }
