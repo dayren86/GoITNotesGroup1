@@ -11,10 +11,5 @@ pipeline {
                 sh 'sudo scp /var/lib/jenkins/workspace/finalRelease/notesApp.jar root@167.99.137.234:/root/notesApp'
             }
         }
-//         stage('deploy') {
-//             steps{
-//                 sh 'sudo java -jar /var/lib/jenkins/workspace/finalRelease/notesApp.jar'
-//                 }
-//             }
-//         }
+
 }
