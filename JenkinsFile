@@ -8,14 +8,8 @@ pipeline {
             }
         stage('copy'){
             steps{
-                sh 'sudo scp /var/lib/jenkins/workspace/finalRelease/notesApp.jar root@167.99.137.234:/root/notesApp'
+                sh 'sudo scp /var/lib/jenkins/workspace/finalRelease/notesApp.jar root@159.89.107.231:/root/notesApp'
             }
         }
-
-//         stage('deploy'){
-//             steps{
-//             sh 'echo Hello World!'
-//             }
-//         }
     }
 }
